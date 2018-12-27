@@ -8,7 +8,7 @@
 </head>
 
 
-<body id="main">
+<body>
 
 
     <div class="keys">
@@ -76,6 +76,15 @@
             console.log(playedKey);
             stopDrum(playedKey);
         });
+        /* TO DO: would like to figure out how to extend to pointer events */
+        for (var i = 0; i < drumkeys.length; i++) {
+            console.log(drumkeys[i].getAttribute("data-key"));
+            drumkeys[i].addEventListener("click", function(event) {
+                var playedKey = event.relatedTarget.getAttribute("data-key");
+                console.log(playedKey);
+                playDrum(playedKey);
+            })
+        }
         console.log("listening time");
 
         /* Add class to show outline/play sound for the key being played */
@@ -90,16 +99,6 @@
             console.log(mySound);
             var audio = new Audio(mySound);
             audio.play();
-
-            /* previous way... in case we need it later... */
-            /*            for (var i = 0; i < drumkeys.length; i++) {
-                            console.log(drumkeys[i].getAttribute("data-key"));
-                            if (myKey == drumkeys[i].getAttribute("data-key")) {
-                                console.log("add playing class please")
-                                drumkeys[i].classList.add("playing");
-                            }
-
-                        }*/
         }
 
         /* Watch for one to stop getting played and rm class/stop sound */
