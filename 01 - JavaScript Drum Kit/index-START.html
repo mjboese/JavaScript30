@@ -6,31 +6,7 @@
     <title>JS Drum Kit</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<script>
-    /* Find all of the keys */
-    var drumkeys = document.getElementsByClassName("key");
-    console.log(drumkeys);
 
-    /* Watch for one to get played (keyboard, may later want to extend to pointer as well) */
-    document.addEventListener("keydown", playDrum(event));
-
-
-    /* Add class to show outline/play sound for the key being played */
-    function playDrum(myEvent) {
-        console.log("key down: ");
-        console.log("70");
-        for (var i = 0; i < drumkeys.length; i++) {
-            if ("70" == drumkeys[i].getAttribute("data-key")) {
-                drumkeys[i].classList.add("playing");
-            }
-
-        }
-
-    }
-
-    /* Watch for one to stop getting played and rm class/stop sound */
-
-</script>
 
 <body id="main">
 
@@ -85,9 +61,56 @@
     <audio data-key="76" src="sounds/tink.wav"></audio>
 
     <script>
+        /* Find all of the keys if we will need to iterate over them to match... possibly not but still. */
+        var drumkeys = document.getElementsByClassName("key");
+        console.log(drumkeys);
+
+        /* Watch for one to get played (keyboard, may later want to extend to pointer as well) */
+        document.addEventListener("keydown", function(event) {
+            var playedKey = event.which;
+            console.log(playedKey);
+            playDrum(playedKey);
+        });
+        document.addEventListener("keyup", function(event) {
+            var playedKey = event.which;
+            console.log(playedKey);
+            stopDrum(playedKey);
+        });
+        console.log("listening time");
+
+        /* Add class to show outline/play sound for the key being played */
+        function playDrum(myKey) {
+            console.log("key down: ".concat(myKey));
+            dataSelector = '[data-key="'.concat(myKey, '"]');
+            console.log(document.querySelector(dataSelector));
+            document.querySelector(dataSelector).classList.add("playing");
+
+            mySound = document.querySelector(".playing .sound").innerHTML;
+            mySound = ".\\sounds\\".concat(mySound, ".WAV");
+            console.log(mySound);
+            var audio = new Audio(mySound);
+            audio.play();
+
+            /* previous way... in case we need it later... */
+            /*            for (var i = 0; i < drumkeys.length; i++) {
+                            console.log(drumkeys[i].getAttribute("data-key"));
+                            if (myKey == drumkeys[i].getAttribute("data-key")) {
+                                console.log("add playing class please")
+                                drumkeys[i].classList.add("playing");
+                            }
+
+                        }*/
+        }
+
+        /* Watch for one to stop getting played and rm class/stop sound */
+        function stopDrum(myKey) {
+            console.log("key up: ".concat(myKey));
+            dataSelector = '[data-key="'.concat(myKey, '"]');
+            console.log(document.querySelector(dataSelector));
+            document.querySelector(dataSelector).classList.remove("playing");
+        }
 
     </script>
-
 
 </body>
 
